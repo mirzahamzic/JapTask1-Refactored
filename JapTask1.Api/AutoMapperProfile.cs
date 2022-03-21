@@ -18,10 +18,15 @@ namespace JapTask1.Mapper
         {
             CreateMap<Recipe, GetRecipeDto>()
             .ForMember(dest => dest.Ingredients, o => o.MapFrom(src => src.RecipesIngredients));
+            //.ForMember(dest => dest.TotalCost, o => o.MapFrom(src => src.RecipesIngredients.))
+            //.ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => Calculator.RecipeTotalCost(src., src.UnitMeasure, src.Ingredient.PurchasePrice, src.Recipe)));
 
             CreateMap<RecipeIngredient, GetIngredientDto>()
             .ForMember(dest => dest.Name, o => o.MapFrom(src => src.Ingredient.Name))
             .ForMember(dest => dest.Price, o => o.MapFrom(src => Calculator.PricePerIngredient(src.Ingredient.PurchasedQuantity, src.Ingredient.PurchasedUnitOfMeasure, src.Ingredient.PurchasedPrice, src.Unit, src.Quantity)));
+
+            //CreateMap<RecipeIngredient, GetRecipeDto>()
+            //    .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => Calculator.RecipeTotalCost(src.Quantity, src.Unit, src.Ingredient.PurchasedQuantity, src.Recipe)));
 
             CreateMap<Category, GetCategoryDto>();
             CreateMap<Ingredient, IngredientDto>();

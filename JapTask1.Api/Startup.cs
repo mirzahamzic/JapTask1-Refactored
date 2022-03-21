@@ -4,6 +4,7 @@ using JapTask1.Api.Middlewares;
 using JapTask1.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,23 +39,19 @@ namespace JapTask1.Api
         {
             services.AddControllers();
 
-            //adding http services
-            services.AddHttpServiceConfiguration();
+            services.AddHttpServiceConfiguration(); //adding http services
 
-            //swagger config
-            services.AddSwaggerConfig();
+            services.AddSwaggerConfig(); //swagger config
 
-            //database config
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString)); //database config
 
-            //automapper config
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup)); //automapper config
 
-            //jwt auth settings
-            //services.AddAuthConfig();
+            services.AddAuthConfig(); //jwt auth settings
 
-            //add cors
-            services.AddCorsConfiguration();
+            services.AddCorsConfiguration(); //add cors
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,13 +65,13 @@ namespace JapTask1.Api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication(); //use authentication
+
             app.UseRouting();
 
-            //exception middleware
-            app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
+            app.UseMiddleware(typeof(ExceptionHandlingMiddleware)); //exception middleware
 
-            app.UseCors("CORS");
-
+            app.UseCors("CORS"); //use cors
 
             app.UseAuthorization();
 
@@ -83,7 +80,7 @@ namespace JapTask1.Api
                 endpoints.MapControllers();
             });
 
-            DatabaseSeed.Seed(app);
+            DatabaseSeed.Seed(app); //seeding the database upon first run of the app
 
         }
     }

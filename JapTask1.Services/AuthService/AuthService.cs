@@ -108,7 +108,7 @@ namespace JapTask1.Services.UserService
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Name)
+                new Claim(ClaimTypes.NameIdentifier, user.Name)
             };
 
             // symetric key we added in json file

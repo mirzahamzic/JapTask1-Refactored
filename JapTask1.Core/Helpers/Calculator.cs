@@ -12,10 +12,29 @@ namespace JapTask1.Common.Helpers
     public class Calculator
     {
 
-        //public static double RecipeTotalCost(GetRecipeDto recipe)
+        public static double RecipeTotalCost(GetRecipeDto recipe)
+        {
+            return recipe.Ingredients.Sum(i => i.Price);
+        }
+
+        //public static double RecipeTotalCost(double quantity, Units unit, double pPrice, Recipe recipe)
+
+
         //{
-        //    return recipe.Ingredients.Sum(i => i.Price);
+        //    double pricePerIng;
+
+        //    if (unit == Units.Gr || unit == Units.Ml)
+        //    {
+        //        pricePerIng = (pPrice * quantity);
+        //    }
+        //    else
+        //    {
+        //        pricePerIng = (pPrice * quantity);
+        //    };
+
+        //    return pricePerIng;
         //}
+
 
         public static double PricePerIngredient(double pQuantity, Units pUnit, double pPrice, Units unit, double quantity)
         {

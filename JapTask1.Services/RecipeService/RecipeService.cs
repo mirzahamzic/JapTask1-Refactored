@@ -4,11 +4,13 @@ using JapTask1.Core.Dtos.Response;
 using JapTask1.Core.Entities;
 using JapTask1.Core.Interfaces;
 using JapTask1.Database;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,13 +23,19 @@ namespace JapTask1.Services.RecipeService
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public RecipeService(AppDbContext context, IMapper mapper, IConfiguration configuration)
+        public RecipeService(AppDbContext context, IMapper mapper, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+
+        //getting user id from token
+        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public async Task Create(AddRecipeDto recipe)
         {
@@ -75,6 +83,7 @@ namespace JapTask1.Services.RecipeService
 
             serviceResponse.Data = dbRecipes.Select(recipe => _mapper.Map<GetRecipeDto>(recipe)).Skip(limit).Take(pageSize).ToList();
 
+
             return serviceResponse;
         }
 
@@ -108,6 +117,7 @@ namespace JapTask1.Services.RecipeService
                 .FirstOrDefaultAsync(r => r.Id == recipeId);
 
             serviceResponse.Data = _mapper.Map<GetRecipeDto>(dbRecipes);
+            //serviceResponse.Data = dbRecipes.RecipesIngredients.Select(i => _mapper.Map<GetRecipeDto>(i));
 
             return serviceResponse;
         }
