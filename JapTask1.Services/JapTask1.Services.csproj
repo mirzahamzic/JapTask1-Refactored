@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\JapTask1.Core\JapTask1.Core.csproj" />
+		<ProjectReference Include="..\JapTask1.Database\JapTask1.Database.csproj" />
+	</ItemGroup>
+
+</Project>
