@@ -2,6 +2,7 @@
 using JapTask1.Core.Dtos.Response;
 using JapTask1.Core.Entities;
 using JapTask1.Core.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace JapTask1.Api.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("CORS")]
     [ApiController]
     public class RecipeController : ControllerBase
     {
@@ -49,6 +51,13 @@ namespace JapTask1.Api.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> Search(string searchTerm)
         {
             return Ok(await _recipeService.Search(searchTerm));
+        }
+
+        [HttpGet, Route("getByCategory/{categoryId}/{limit}")]
+        public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> GetByCategory(int categoryId, int limit)
+
+        {
+            return Ok(await _recipeService.GetByCategory(categoryId, limit));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using JapTask1.Core.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 namespace JapTask1.Api.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("CORS")]
     [ApiController]
     public class CategoryController : ControllerBase
     {

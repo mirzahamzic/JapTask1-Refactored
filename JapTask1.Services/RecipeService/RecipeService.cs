@@ -29,7 +29,6 @@ namespace JapTask1.Services.RecipeService
             _configuration = configuration;
         }
 
-
         public async Task Create(AddRecipeDto recipe)
         {
 
@@ -73,6 +72,25 @@ namespace JapTask1.Services.RecipeService
             .Include(r => r.RecipesIngredients)
             .ThenInclude(i => i.Ingredient)
             .ToListAsync();
+
+            serviceResponse.Data = dbRecipes.Select(recipe => _mapper.Map<GetRecipeDto>(recipe)).Skip(limit).Take(pageSize).ToList();
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetRecipeDto>>> GetByCategory(int categoryId, int limit)
+        {
+            var serviceResponse = new ServiceResponse<List<GetRecipeDto>>();
+
+            int pageSize;
+            pageSize = Int16.Parse(_configuration.GetSection("Pagination:Limit").Value);
+
+            var dbRecipes = await _context.Recipes
+                .Include(r => r.Category)
+                .Include(r => r.RecipesIngredients)
+                .ThenInclude(i => i.Ingredient)
+                .Where(r => r.CategoryId == categoryId)
+                .ToListAsync();
 
             serviceResponse.Data = dbRecipes.Select(recipe => _mapper.Map<GetRecipeDto>(recipe)).Skip(limit).Take(pageSize).ToList();
 

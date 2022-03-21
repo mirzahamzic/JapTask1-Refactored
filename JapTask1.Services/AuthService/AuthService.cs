@@ -3,9 +3,12 @@ using JapTask1.Core.Interfaces;
 using JapTask1.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,7 +40,7 @@ namespace JapTask1.Services.UserService
             }
             else
             {
-                response.Data = user.Name;
+                response.Data = CreateToken(user);
             }
 
             return response;
@@ -97,6 +100,38 @@ namespace JapTask1.Services.UserService
                 }
                 return true;
             }
+        }
+
+        private string CreateToken(User user)
+        {
+            // elements we encode in token
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Name)
+            };
+
+            // symetric key we added in json file
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+            // signing the key and signin credentials
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            //creating token and adding options like expires date and claims
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = credentials
+
+            };
+
+            //token handler for JWT to create security token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+
+            return tokenHandler.WriteToken(token);
         }
 
     }

@@ -73,6 +73,9 @@ namespace JapTask1.Api
             //exception middleware
             app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
+            app.UseCors("CORS");
+
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
