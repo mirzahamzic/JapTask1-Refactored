@@ -27,6 +27,7 @@ namespace JapTask1.Api
         {
             Configuration = configuration;
             ConnectionString = Configuration.GetConnectionString("DefaultConnectionString");
+            configuration.GetSection("AppSettings:Token").Bind(AuthenticationConfigurationExtension.Setting);
 
         }
 
@@ -48,6 +49,12 @@ namespace JapTask1.Api
 
             //automapper config
             services.AddAutoMapper(typeof(Startup));
+
+            //jwt auth settings
+            //services.AddAuthConfig();
+
+            //add cors
+            services.AddCorsConfiguration();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

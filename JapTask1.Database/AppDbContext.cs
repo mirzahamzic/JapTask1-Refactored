@@ -30,7 +30,7 @@ namespace JapTask1.Database
         }
 
         public DbSet<Recipe> Recipes { get; set; }
-        //public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<RecipeIngredient> RecipesIngredients { get; set; }

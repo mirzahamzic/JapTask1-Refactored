@@ -46,7 +46,7 @@ namespace JapTask1.Api.Controllers
         }
 
         [HttpGet, Route("searchRecipe/{searchTerm}")]
-        public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> Search([FromQuery] string searchTerm)
+        public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> Search(string searchTerm)
         {
             return Ok(await _recipeService.Search(searchTerm));
         }

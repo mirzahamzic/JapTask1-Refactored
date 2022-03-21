@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace JapTask1.Api.Extensions
 {
@@ -13,6 +14,11 @@ namespace JapTask1.Api.Extensions
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
+        }
+
+        public static void UseCorsConfig(this IApplicationBuilder app)
+        {
+            app.UseCors("CORS");
         }
     }
 }

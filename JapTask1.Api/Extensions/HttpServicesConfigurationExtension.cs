@@ -2,6 +2,7 @@
 using JapTask1.Services.CategoryService;
 using JapTask1.Services.IngredientService;
 using JapTask1.Services.RecipeService;
+using JapTask1.Services.UserService;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JapTask1.Api.Extensions
@@ -13,6 +14,7 @@ namespace JapTask1.Api.Extensions
             services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IIngredientService, IngredientService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
     }
 }
