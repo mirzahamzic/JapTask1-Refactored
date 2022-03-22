@@ -31,12 +31,13 @@ namespace JapTask1.Services.UserService
             if (user == null)
             {
                 response.Success = false;
-                response.Message = "User not found.";
+                throw new System.Exception("User not found.");
             }
             else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 response.Success = false;
-                response.Message = "Wrong password.";
+                throw new System.Exception("Wrong password.");
+
             }
             else
             {
@@ -52,8 +53,8 @@ namespace JapTask1.Services.UserService
             if (await UserExists(user.Name))
             {
                 response.Success = false;
-                response.Message = "User already exists.";
-                return response;
+                throw new System.Exception("User already exists.");
+
             }
 
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);

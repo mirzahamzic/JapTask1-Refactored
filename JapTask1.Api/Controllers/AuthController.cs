@@ -37,10 +37,10 @@ namespace JapTask1.Api.Controllers
         {
             var response = await _authService.Login(request.Name, request.Password);
 
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
+            //if (!response.Success)
+            //{
+            //    return BadRequest(response);
+            //}
             return Ok(response);
         }
 
