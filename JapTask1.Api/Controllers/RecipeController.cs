@@ -35,8 +35,7 @@ namespace JapTask1.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> Get([FromQuery] int limit)
         {
-            //user claims from token
-            //int id = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
             return Ok(await _recipeService.Get(limit));
         }
 

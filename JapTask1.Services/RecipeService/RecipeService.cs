@@ -47,7 +47,7 @@ namespace JapTask1.Services.RecipeService
                 Description = recipe.Description,
                 CategoryId = recipe.CategoryId,
                 CreatedAt = DateTime.Now,
-                //UserId = user.Id,
+                UserId = user.Id,
             };
 
             await _context.Recipes.AddAsync(newRecipe);
@@ -73,6 +73,7 @@ namespace JapTask1.Services.RecipeService
         {
             var serviceResponse = new ServiceResponse<List<GetRecipeDto>>();
 
+
             int pageSize;
             pageSize = Int16.Parse(_configuration.GetSection("Pagination:Limit").Value);
 
@@ -80,6 +81,7 @@ namespace JapTask1.Services.RecipeService
             .Include(r => r.Category)
             .Include(r => r.RecipesIngredients)
             .ThenInclude(i => i.Ingredient)
+            .Where(r => r.User.Id == GetUserId())
             .ToListAsync();
 
             serviceResponse.Data = dbRecipes.Select(recipe => _mapper.Map<GetRecipeDto>(recipe)).Skip(limit).Take(pageSize).ToList();
@@ -99,7 +101,7 @@ namespace JapTask1.Services.RecipeService
                 .Include(r => r.Category)
                 .Include(r => r.RecipesIngredients)
                 .ThenInclude(i => i.Ingredient)
-                .Where(r => r.CategoryId == categoryId)
+                .Where(r => r.CategoryId == categoryId && r.UserId == GetUserId())
                 .ToListAsync();
 
             serviceResponse.Data = dbRecipes.Select(recipe => _mapper.Map<GetRecipeDto>(recipe)).Skip(limit).Take(pageSize).ToList();
@@ -115,7 +117,7 @@ namespace JapTask1.Services.RecipeService
                 .Include(r => r.Category)
                 .Include(r => r.RecipesIngredients)
                 .ThenInclude(i => i.Ingredient)
-                .FirstOrDefaultAsync(r => r.Id == recipeId);
+                .FirstOrDefaultAsync(r => r.Id == recipeId && r.UserId == GetUserId());
 
             serviceResponse.Data = _mapper.Map<GetRecipeDto>(dbRecipes);
             //serviceResponse.Data = dbRecipes.RecipesIngredients.Select(i => _mapper.Map<GetRecipeDto>(i));
@@ -131,7 +133,7 @@ namespace JapTask1.Services.RecipeService
                 .Include(r => r.Category)
                 .Include(r => r.RecipesIngredients)
                 .ThenInclude(i => i.Ingredient)
-                .Where(n => n.Name.ToLower().Contains(searchTerm) || n.Description.ToLower().Contains(searchTerm))
+                .Where(r => (r.Name.ToLower().Contains(searchTerm) || r.Description.ToLower().Contains(searchTerm)) && r.UserId == GetUserId())
                 .ToListAsync();
 
             serviceResponse.Data = dbRecipes.Select(recipe => _mapper.Map<GetRecipeDto>(recipe)).ToList();
