@@ -2,6 +2,7 @@
 using JapTask1.Core.Dtos.Response;
 using JapTask1.Core.Entities;
 using JapTask1.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace JapTask1.Api.Controllers
 {
+
+    [Authorize]
     [Route("api/[controller]")]
     [EnableCors("CORS")]
     [ApiController]
@@ -32,6 +35,8 @@ namespace JapTask1.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> Get([FromQuery] int limit)
         {
+            //user claims from token
+            //int id = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
             return Ok(await _recipeService.Get(limit));
         }
 

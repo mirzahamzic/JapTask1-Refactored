@@ -27,9 +27,6 @@ namespace JapTask1.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            ConnectionString = Configuration.GetConnectionString("DefaultConnectionString");
-            configuration.GetSection("AppSettings:Token").Bind(AuthenticationConfigurationExtension.Setting);
-
         }
 
         public IConfiguration Configuration { get; }
@@ -43,11 +40,11 @@ namespace JapTask1.Api
 
             services.AddSwaggerConfig(); //swagger config
 
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString)); //database config
+            services.AddDBConnection(Configuration); //database config
 
             services.AddAutoMapper(typeof(Startup)); //automapper config
 
-            services.AddAuthConfig(); //jwt auth settings
+            services.AddAuthConfig(Configuration); //jwt auth settings
 
             services.AddCorsConfiguration(); //add cors
 
@@ -69,7 +66,7 @@ namespace JapTask1.Api
 
             app.UseRouting();
 
-            app.UseMiddleware(typeof(ExceptionHandlingMiddleware)); //exception middleware
+            app.UseMiddleware(typeof(ExceptionHandlingMiddleware)); //exception middleware 
 
             app.UseCors("CORS"); //use cors
 

@@ -39,6 +39,7 @@ namespace JapTask1.Services.RecipeService
 
         public async Task Create(AddRecipeDto recipe)
         {
+            User user = _context.Users.FirstOrDefault(u => u.Id == GetUserId());
 
             var newRecipe = new Recipe()
             {
