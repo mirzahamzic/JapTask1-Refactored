@@ -174,31 +174,31 @@ namespace JapTask1.Database
 
 
 
-                //if (!context.Users.Any())
-                //{
-                //    string password = "admin123456";
-                //    User user = new()
-                //    {
-                //        Name = "Admin"
-                //    };
+                if (!context.Users.Any())
+                {
+                    string password = "admin123456";
+                    User user = new()
+                    {
+                        Name = "Admin"
+                    };
 
-                //    byte[] passwordSalt;
-                //    byte[] passwordHash;
+                    byte[] passwordSalt;
+                    byte[] passwordHash;
 
-                //    using (var hmac = new System.Security.Cryptography.HMACSHA512())
-                //    {
-                //        passwordSalt = hmac.Key;
-                //        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                //    }
+                    using (var hmac = new System.Security.Cryptography.HMACSHA512())
+                    {
+                        passwordSalt = hmac.Key;
+                        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                    }
 
-                //    user.PasswordHash = passwordHash;
-                //    user.PasswordSalt = passwordSalt;
-                //    user.Created_At = DateTime.Now;
+                    user.PasswordHash = passwordHash;
+                    user.PasswordSalt = passwordSalt;
+                    user.CreatedAt = DateTime.Now;
 
-                //    context.Users.Add(user);
-                //    await context.SaveChangesAsync();
+                    context.Users.Add(user);
+                    await context.SaveChangesAsync();
 
-                //};
+                };
             }
         }
 
