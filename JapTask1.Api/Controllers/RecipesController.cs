@@ -16,11 +16,11 @@ namespace JapTask1.Api.Controllers
     [Route("api/[controller]")]
     [EnableCors("CORS")]
     [ApiController]
-    public class RecipeController : ControllerBase
+    public class RecipesController : ControllerBase
     {
         private readonly IRecipeService _recipeService;
 
-        public RecipeController(IRecipeService recipeService)
+        public RecipesController(IRecipeService recipeService)
         {
             _recipeService = recipeService;
         }
@@ -33,14 +33,14 @@ namespace JapTask1.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> Get([FromQuery] int limit)
+        public async Task<ActionResult> Get([FromQuery] BaseSearch req)
         {
 
-            return Ok(await _recipeService.Get(limit));
+            return Ok(await _recipeService.Get(req));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> GetById(int id)
+        public async Task<ActionResult> GetById(int id)
         {
             var response = await _recipeService.GetById(id);
 
@@ -51,17 +51,17 @@ namespace JapTask1.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet, Route("searchRecipe/{searchTerm}")]
-        public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> Search(string searchTerm)
+        [HttpGet, Route("searchRecipe")]
+        public async Task<ActionResult> Search([FromQuery] RecipeSearch req)
         {
-            return Ok(await _recipeService.Search(searchTerm));
+            return Ok(await _recipeService.Search(req));
         }
 
         [HttpGet, Route("getByCategory/{categoryId}/{limit}")]
-        public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> GetByCategory(int categoryId, int limit)
+        public async Task<ActionResult<ServiceResponse<List<GetRecipeDto>>>> GetByCategory(int categoryId, BaseSearch req)
 
         {
-            return Ok(await _recipeService.GetByCategory(categoryId, limit));
+            return Ok(await _recipeService.GetByCategory(categoryId, req));
         }
     }
 }

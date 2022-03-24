@@ -1,4 +1,5 @@
-﻿using JapTask1.Core.Interfaces;
+﻿using JapTask1.Core.Dtos.Request;
+using JapTask1.Core.Interfaces;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,19 +11,19 @@ namespace JapTask1.Api.Controllers
     [Route("api/[controller]")]
     [EnableCors("CORS")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
 
-        [HttpGet("getCategories")]
-        public async Task<IActionResult> GetAllCategories([FromQuery][Optional] string limit)
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories([FromQuery] CategorySearch req)
         {
-            var allCategories = await _categoryService.Get(limit);
+            var allCategories = await _categoryService.Get(req);
             return Ok(allCategories);
         }
     }

@@ -9,6 +9,7 @@ namespace JapTask1.Core.Entities
 {
     public class Ingredient : BaseEntity
     {
+        public string Name { get; set; }
         public double PurchasedQuantity { get; set; }
         public double PurchasedPrice { get; set; }
         public Units PurchasedUnitOfMeasure { get; set; }

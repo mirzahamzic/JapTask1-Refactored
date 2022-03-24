@@ -26,7 +26,7 @@ namespace JapTask1.Api.Middlewares
         }
         private static Task HandleException(HttpContext context, Exception ex)
         {
-            var errorMessage = JsonConvert.SerializeObject(new { Message = ex.Message, Code = "GE" });
+            var errorMessage = JsonConvert.SerializeObject(new { Message = "Internal server error", Code = "500" });
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

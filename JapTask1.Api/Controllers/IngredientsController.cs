@@ -11,11 +11,11 @@ namespace JapTask1.Api.Controllers
     [Route("api/[controller]")]
     [EnableCors("CORS")]
     [ApiController]
-    public class IngredientController : ControllerBase
+    public class IngredientsController : ControllerBase
     {
         private readonly IIngredientService _ingredientService;
 
-        public IngredientController(IIngredientService ingredientService)
+        public IngredientsController(IIngredientService ingredientService)
         {
             _ingredientService = ingredientService;
         }

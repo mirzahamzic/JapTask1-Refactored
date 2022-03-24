@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JapTask1.Core.Dtos.Request;
 using JapTask1.Core.Dtos.Response;
 using JapTask1.Core.Interfaces;
 using JapTask1.Database;
@@ -26,27 +27,37 @@ namespace JapTask1.Services.CategoryService
             _mapper = mapper;
         }
 
-        public async Task<List<GetCategoryDto>> Get([Optional] string limit)
+        public async Task<List<GetCategoryDto>> Get([Optional] CategorySearch req)
         {
+            //var req = new CategorySearch();
             int pageSize;
             pageSize = Int16.Parse(_configuration.GetSection("Pagination:Limit").Value);
 
-            var dbCategories = await _context.Categories.ToListAsync();
+            var query = _context.Categories.AsQueryable();
 
-            if (limit == null)
+            //if (req.Id != null)
+            //{
+            //    query = query.Where(x => x.Id == req.Id).AsQueryable();
+            //}
+
+            if (req.Name != null)
             {
-                return dbCategories.Select(c => _mapper.Map<GetCategoryDto>(c)).ToList();
-                //.OrderBy(c => c.Name)
-
+                query = query
+                    .Where(x => x.Name.ToLower().Contains(req.Name.ToLower()))
+                    .AsQueryable();
             }
-            else
+
+            if (req.Limit != null)
             {
-                return dbCategories.Select(c => _mapper.Map<GetCategoryDto>(c))
-                //.OrderBy(c => c.Name)
-                .Skip(Int16.Parse(limit))
+                query = query
+                .Skip((int)req.Limit)
                 .Take(pageSize)
-                .ToList();
+                .AsQueryable();
             }
+
+            return await query
+                .Select(c => _mapper.Map<GetCategoryDto>(c))
+                .ToListAsync();
         }
     }
 }

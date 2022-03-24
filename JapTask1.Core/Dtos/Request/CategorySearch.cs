@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JapTask1.Core.Entities
+namespace JapTask1.Core.Dtos.Request
 {
-    public class Category : BaseEntity
+    public class CategorySearch : BaseSearch
     {
         public string Name { get; set; }
-        public List<Recipe> Recipes { get; set; }
+        public int? Id { get; set; }
     }
 }

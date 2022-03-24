@@ -15,9 +15,16 @@ namespace JapTask1.Database
 
         }
 
-        //many to many relationship override
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<RecipeIngredient> RecipesIngredients { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //many to many relationship override
             modelBuilder.Entity<RecipeIngredient>()
                 .HasOne(r => r.Recipe)
                 .WithMany(ri => ri.RecipesIngredients)
@@ -27,13 +34,13 @@ namespace JapTask1.Database
                 .HasOne(r => r.Ingredient)
                 .WithMany(ri => ri.RecipesIngredients)
                 .HasForeignKey(ri => ri.IngredientId);
+
+
+            //entity configuration
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
 
-        public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Ingredient> Ingredients { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<RecipeIngredient> RecipesIngredients { get; set; }
+
     }
 }
 
